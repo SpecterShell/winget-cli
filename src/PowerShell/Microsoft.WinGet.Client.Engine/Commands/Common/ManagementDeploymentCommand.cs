@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // <copyright file="ManagementDeploymentCommand.cs" company="Microsoft Corporation">
 //     Copyright (c) Microsoft Corporation. Licensed under the MIT License.
 // </copyright>
@@ -35,7 +35,8 @@ namespace Microsoft.WinGet.Client.Engine.Commands.Common
 #if POWERSHELL_WINDOWS
             if (Utilities.UsesInProcWinget)
             {
-                throw new WindowsPowerShellNotSupported();
+                // throw new WindowsPowerShellNotSupported();
+                Console.WriteLine("Running in Windows PowerShell is not recommended");
             }
 #endif
         }

@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // <copyright file="Utilities.cs" company="Microsoft Corporation">
 //     Copyright (c) Microsoft Corporation. Licensed under the MIT License.
 // </copyright>
@@ -94,6 +94,17 @@ namespace Microsoft.WinGet.Client.Engine.Common
         }
 
         /// <summary>
+        /// Gets the WinGet path from the environment variable.
+        /// </summary>
+        public static string CustomWinGetPath
+        {
+            get
+            {
+                return Environment.ExpandEnvironmentVariables(@"%CUSTOMWINGET%");
+            }
+        }
+
+        /// <summary>
         /// Throws if not running as admin.
         /// </summary>
         public static void VerifyAdmin()
@@ -116,6 +127,22 @@ namespace Microsoft.WinGet.Client.Engine.Common
                 Environment.SetEnvironmentVariable(
                     Constants.PathEnvVar,
                     $"{envPathValue};{Utilities.LocalDataWindowsAppPath}",
+                    scope);
+            }
+        }
+
+        /// <summary>
+        /// Adds the custom WinGet path to the user environment path.
+        /// </summary>
+        public static void AddCustomWinGetToPath()
+        {
+            var scope = EnvironmentVariableTarget.User;
+            string? envPathValue = Environment.GetEnvironmentVariable(Constants.PathEnvVar, scope);
+            if (string.IsNullOrEmpty(envPathValue) || !envPathValue.Contains(Utilities.CustomWinGetPath))
+            {
+                Environment.SetEnvironmentVariable(
+                    Constants.PathEnvVar,
+                    $"{envPathValue};{Utilities.CustomWinGetPath}",
                     scope);
             }
         }

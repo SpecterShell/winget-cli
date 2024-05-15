@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // <copyright file="WinGetPackageManagerCommand.cs" company="Microsoft Corporation">
 //     Copyright (c) Microsoft Corporation. Licensed under the MIT License.
 // </copyright>
@@ -205,8 +205,9 @@ namespace Microsoft.WinGet.Client.Engine.Commands
 
         private void RepairEnvPath()
         {
-            // Add windows app path to user PATH environment variable
+            // Add windows app path and custom WinGet path to user PATH environment variable
             Utilities.AddWindowsAppToPath();
+            Utilities.AddCustomWinGetToPath();
 
             // Update this sessions PowerShell environment so the user doesn't have to restart the terminal.
             string? envPathUser = Environment.GetEnvironmentVariable(Constants.PathEnvVar, EnvironmentVariableTarget.User);
@@ -221,11 +222,10 @@ namespace Microsoft.WinGet.Client.Engine.Commands
         {
             if (allUsers)
             {
-                if (Utilities.ExecutingAsSystem)
-                {
-                    throw new NotSupportedException();
-                }
-
+                // if (Utilities.ExecutingAsSystem)
+                // {
+                //     throw new NotSupportedException();
+                // }
                 if (!Utilities.ExecutingAsAdministrator)
                 {
                     throw new WinGetRepairException(Resources.RepairAllUsersMessage);

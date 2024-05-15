@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // <copyright file="WingetCLIWrapper.cs" company="Microsoft Corporation">
 //     Copyright (c) Microsoft Corporation. Licensed under the MIT License.
 // </copyright>
@@ -33,14 +33,20 @@ namespace Microsoft.WinGet.Client.Engine.Helpers
         /// <param name="fullPath">Use full path or not.</param>
         public WingetCLIWrapper(bool fullPath = true)
         {
-            if (Utilities.ExecutingAsSystem)
-            {
-                throw new NotSupportedException();
-            }
-
+            // if (Utilities.ExecutingAsSystem)
+            // {
+            //     throw new NotSupportedException();
+            // }
             if (fullPath)
             {
-                this.wingetPath = WinGetFullPath;
+                if (File.Exists(CustomWinGetFullPath))
+                {
+                    this.wingetPath = CustomWinGetFullPath;
+                }
+                else
+                {
+                    this.wingetPath = WinGetFullPath;
+                }
             }
             else
             {
@@ -58,6 +64,19 @@ namespace Microsoft.WinGet.Client.Engine.Helpers
                 return Path.Combine(
                     Utilities.LocalDataWindowsAppPath,
                     Constants.WingetPackageFamilyName,
+                    Constants.WinGetExe);
+            }
+        }
+
+        /// <summary>
+        /// Gets the full path of winget executable.
+        /// </summary>
+        public static string CustomWinGetFullPath
+        {
+            get
+            {
+                return Path.Combine(
+                    Utilities.CustomWinGetPath,
                     Constants.WinGetExe);
             }
         }
